@@ -5,13 +5,13 @@ A playful maths learning app for a 7-year-old in First Standard. It includes the
 ## What's working in this first version
 
 - Responsive web app that also fits a phone screen.
-- 30 initial activities covering number sense, addition, subtraction, patterns, reasoning, shapes, measurement, and money.
-- Answer feedback, gentle hints, next activity navigation, stars, and saved progress.
+- 30 days × 25 questions (750 total), covering number sense, addition, subtraction, patterns, reasoning, shapes, measurement, and money.
+- Answer feedback, gentle hints, per-question progress, stars, and saved progress.
 - Parent area to create a parent account, sync progress, publish tasks, and import/export task JSON.
 - Capacitor configuration for packaging the same web app as an Android app.
 - GitHub Pages deployment workflow on pushes to `main`.
 
-Starter progress and parent-created tasks are saved locally. A parent can create/sign into an account to sync progress and publish custom tasks to Supabase; published tasks load on other devices.
+Starter questions are generated deterministically on the device. A parent can create/sign into an account to sync progress (including completed questions) and publish custom tasks to Supabase; published tasks load on other devices.
 
 ## Run locally
 
@@ -40,7 +40,7 @@ GitHub Pages is configured at [minimalerp.github.io/kids-maths-trainer](https://
 
 ## Supabase connection
 
-The dedicated Supabase project is `kids-maths-trainer` (`hbxgcmayrcyxwkfultwl`, region `ap-south-1`, Mumbai). Its database contains only the learning app's `learning_tasks` and `learning_progress` tables. The connected `MinimalERP` project contains ERP data and remains separate.
+The dedicated Supabase project is `kids-maths-trainer` (`hbxgcmayrcyxwkfultwl`, region `ap-south-1`, Mumbai). Its database contains only the learning app's `learning_tasks` and `learning_progress` tables. The connected `MinimalERP` project contains ERP data and remains separate. Both app tables use row-level security; parents can only read/write their own progress and manage their own tasks.
 
 The local `.env.local` file holds the project URL and **publishable key** (`sb_publishable_...`). These are public client values protected by row-level security; never put a secret/service-role key in the app or GitHub Pages bundle. The schema migration is in `supabase/migrations/`. Parent sign-in uses email/password. In Supabase Dashboard → **Authentication → URL Configuration**, set the Site URL to `https://minimalerp.github.io/kids-maths-trainer/` and add that URL plus `http://localhost:5173/` to the allowed redirect URLs. A parent must verify the email if email confirmation is enabled in Supabase Auth.
 
@@ -49,5 +49,6 @@ The local `.env.local` file holds the project URL and **publishable key** (`sb_p
 - [x] Create the dedicated Supabase project and learning tables with RLS
 - [x] Add parent authentication, task publishing, and progress sync
 - [ ] Set the Supabase Auth Site URL and allowed redirect URLs
-- [ ] Download the Android APK artifact and install it on the target phone
+- [x] Build the Android APK artifact
+- [ ] Install it on the target phone
 - [ ] Add review/preview, image uploads, and richer question types to the content studio

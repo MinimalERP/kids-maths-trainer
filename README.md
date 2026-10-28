@@ -1,46 +1,53 @@
-# Kids Maths Trainer
+# Number Nest · Kids Maths Trainer
 
-A child-friendly maths learning platform for a 7-year-old in First Standard. The project will combine a guided 30-day learning plan, a parent-managed content studio, a web app, and an Android app.
+A playful maths learning app for a 7-year-old in First Standard. It includes the first 30 days of short activities, an offline-first child view, and a local parent area for authoring and importing/exporting tasks.
 
-## Product goals
+## What's working in this first version
 
-- Build number sense, mental addition and subtraction, patterns, reasoning, estimation, and confidence.
-- Keep daily activities short, playful, and pressure-free (about 15–20 minutes).
-- Let a parent create, preview, upload, and publish new learning tasks.
-- Make published lessons available to the web and Android apps without rebuilding the Android app.
-- Support offline practice with progress sync when connected.
+- Responsive web app that also fits a phone screen.
+- 30 initial activities covering number sense, addition, subtraction, patterns, reasoning, shapes, measurement, and money.
+- Answer feedback, gentle hints, next activity navigation, stars, and saved progress.
+- Parent area to create a parent account, sync progress, publish tasks, and import/export task JSON.
+- Capacitor configuration for packaging the same web app as an Android app.
+- GitHub Pages deployment workflow on pushes to `main`.
 
-## Planned architecture
+Starter progress and parent-created tasks are saved locally. A parent can create/sign into an account to sync progress and publish custom tasks to Supabase; published tasks load on other devices.
 
-- **Web app:** TypeScript and React, deployed with GitHub Pages.
-- **Android app:** Capacitor wrapper around the shared web experience.
-- **Backend:** Supabase for published content, authentication, and progress sync.
-- **Local storage:** Cached lessons and progress for offline use.
-- **Content formats:** In-app editor plus validated JSON import; CSV can be added for suitable question types.
+## Run locally
 
-No Supabase project or credentials are committed here. Configure secrets through GitHub Actions and Supabase settings; never put a Supabase service-role key in client code.
+```sh
+npm install
+npm run dev
+```
 
-## Initial learning plan
+Build the web app with `npm run build`.
 
-The first curriculum targets ages 6–8 and includes 30 daily activities:
+## Android
 
-1. Number sense and counting
-2. Mental addition and subtraction
-3. Patterns and logical thinking
-4. Applied maths, measurement, money, and review
+Install Android Studio and its Android SDK, then:
 
-Activities should provide hints and explanations, adapt to a child's progress, and avoid timed tests or punitive feedback.
+```sh
+npm run android:init
+npm run android:sync
+npm run android:open
+```
 
-## Roadmap
+Android Studio can then build and install the app on an emulator or connected phone. The Android build needs the Android SDK/JDK configured on the build machine.
 
-- [ ] Build the child-facing web app and first 30 daily activities
-- [ ] Add parent mode and task authoring/preview
-- [ ] Add validated JSON import and publish workflow
-- [ ] Add Supabase schema, authentication, and row-level security
-- [ ] Deploy the web app to GitHub Pages
-- [ ] Package the app for Android with Capacitor
-- [ ] Add offline caching and progress synchronization
+## GitHub Pages
 
-## Development status
+GitHub Pages is configured at [minimalerp.github.io/kids-maths-trainer](https://minimalerp.github.io/kids-maths-trainer/). The workflow at `.github/workflows/pages.yml` builds and publishes the app on pushes to `main`. The configured site path is `/kids-maths-trainer/`.
 
-This repository is the project home and initial specification. Implementation and deployment configuration are to follow.
+## Supabase connection
+
+The dedicated Supabase project is `kids-maths-trainer` (`hbxgcmayrcyxwkfultwl`, region `ap-south-1`, Mumbai). Its database contains only the learning app's `learning_tasks` and `learning_progress` tables. The connected `MinimalERP` project contains ERP data and remains separate.
+
+The local `.env.local` file holds the project URL and **publishable key** (`sb_publishable_...`). These are public client values protected by row-level security; never put a secret/service-role key in the app or GitHub Pages bundle. The schema migration is in `supabase/migrations/`. Parent sign-in uses email/password. In Supabase Dashboard → **Authentication → URL Configuration**, set the Site URL to `https://minimalerp.github.io/kids-maths-trainer/` and add that URL plus `http://localhost:5173/` to the allowed redirect URLs. A parent must verify the email if email confirmation is enabled in Supabase Auth.
+
+## Next steps
+
+- [x] Create the dedicated Supabase project and learning tables with RLS
+- [x] Add parent authentication, task publishing, and progress sync
+- [ ] Set the Supabase Auth Site URL and allowed redirect URLs
+- [ ] Download the Android APK artifact and install it on the target phone
+- [ ] Add review/preview, image uploads, and richer question types to the content studio

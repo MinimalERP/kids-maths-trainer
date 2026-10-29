@@ -7,11 +7,12 @@ A playful maths learning app for a 7-year-old in First Standard. It includes the
 - Responsive web app that also fits a phone screen.
 - 30 days × 25 questions (750 total), covering number sense, addition, subtraction, patterns, reasoning, shapes, measurement, and money.
 - Answer feedback, gentle hints, per-question progress, stars, and saved progress.
+- Two-player treasure race with four-answer arithmetic questions, a five-second timer, reset-on-mistake rules, stars, and medal awards.
 - Parent area to create a parent account, sync progress, publish tasks, and import/export task JSON.
 - Capacitor configuration for packaging the same web app as an Android app.
 - GitHub Pages deployment workflow on pushes to `main`.
 
-Starter questions are generated deterministically on the device. A parent can create/sign into an account to sync progress (including completed questions) and publish custom tasks to Supabase; published tasks load on other devices.
+Starter questions are generated deterministically on the device. A parent can create/sign into an account to sync progress (including completed questions) and publish custom tasks to Supabase; published tasks load on other devices. The app checks for new published lessons at launch, when reopened, every minute while open, and from the lesson refresh button, so lesson content updates do not require an APK reinstall. New app features still require an app update.
 
 ## Run locally
 
